@@ -1,8 +1,6 @@
 package uk.ac.ed.inf.ilptutorialrestservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import uk.ac.ed.inf.ilptutorialrestservice.data.Restaurant;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -46,7 +44,7 @@ public class TestPostClient {
 
             // write the stuff to the server
             OutputStream os = con.getOutputStream();
-            byte[] input = "{ \"item1\" : \"AAA\",  \"item2\" : \"BBB\"  }".getBytes("utf-8");
+            byte[] input = "{ \"item1\" : \"AAA\",  \"item2\" : \"BBB\"  }".getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
 
             // read the result (a string) back

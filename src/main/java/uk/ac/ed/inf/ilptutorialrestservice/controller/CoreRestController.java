@@ -1,11 +1,10 @@
 package uk.ac.ed.inf.ilptutorialrestservice.controller;
 
-import ch.qos.logback.core.joran.sanity.Pair;
 import com.google.gson.Gson;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ed.inf.ilptutorialrestservice.data.Restaurant;
-import uk.ac.ed.inf.ilptutorialrestservice.data.Tuple;
+import uk.ac.ed.inf.ilptutorialrestservice.dto.Restaurant;
+import uk.ac.ed.inf.ilptutorialrestservice.dto.Tuple;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -55,8 +54,13 @@ public class CoreRestController {
     @RequestMapping(value = "/test", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String testHtml() {
-        return "<html>\n" + "<header><title>ILP Tutorial REST Server</title></header>\n" +
-                "<body>\n<h1>" + "Hello from the ILP Tutorial REST Server\n" + "</h1></body>\n" + "</html>";
+        return """
+                <html>
+                <header><title>ILP Tutorial REST Server</title></header>
+                <body>
+                <h1>Hello from the ILP Tutorial REST Server
+                </h1></body>
+                </html>""";
     }
 
     /**

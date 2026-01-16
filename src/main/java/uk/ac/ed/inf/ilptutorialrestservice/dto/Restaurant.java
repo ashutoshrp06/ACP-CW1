@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.ilptutorialrestservice.data;
+package uk.ac.ed.inf.ilptutorialrestservice.dto;
 
 
 import java.time.DayOfWeek;
