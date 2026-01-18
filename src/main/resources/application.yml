@@ -1,12 +1,12 @@
 spring:
   application:
-    name: IlpTutorialRestService
+    name: AcpTutorial
 
 info:
   app:
-    name: IlpTutorialRestService
-    description: This is the ILP Tutorial Rest Service
-    version: 3.0
+    name: AcpTutorial
+    description: This is the ACP Tutorial Rest Service
+    version: 1.0
 
 management:
   endpoints:
@@ -32,3 +32,9 @@ springdoc:
   api-docs:
     enabled: true
 
+server:
+  port: 8080
+
+
+acp:
+  # ilp-endpoint: https://ilp-rest-2025-all-assigned.azurewebsites.net/ABC

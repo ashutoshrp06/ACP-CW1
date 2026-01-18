@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.ilptutorialrestservice.dto;
+package uk.ac.ed.inf.acpTutorial.dto;
 
 /**
  * defines a pizza which can be ordered from a restaurant

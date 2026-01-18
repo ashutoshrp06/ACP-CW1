@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.ilptutorialrestservice;
+package uk.ac.ed.inf.acpTutorial;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,7 +18,7 @@ public class TestPostClient {
         }
 
         var baseUrl = args[0];
-        if (baseUrl.endsWith("/") == false) {
+        if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
 

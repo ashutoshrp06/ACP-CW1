@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.ilptutorialrestservice.gsonUtils;
+package uk.ac.ed.inf.acpTutorial.gsonUtils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;

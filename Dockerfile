@@ -1,11 +1,3 @@
-# Old way using openjdk image
-#FROM --platform=linux/amd64 openjdk
-#VOLUME /tmp
-#EXPOSE 8080
-#COPY target/IlpTutorialRestService*.jar app.jar
-#ENTRYPOINT ["java", "-jar","/app.jar"]
-
-
 # Use an official Maven image as the base image
 FROM maven:3.9.9-amazoncorretto-21-debian AS build
 # Set the working directory in the container

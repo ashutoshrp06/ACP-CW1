@@ -1,20 +1,64 @@
-package uk.ac.ed.inf.ilptutorialrestservice.controller;
+package uk.ac.ed.inf.acpTutorial.controller;
 
 import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ed.inf.ilptutorialrestservice.dto.Restaurant;
-import uk.ac.ed.inf.ilptutorialrestservice.dto.Tuple;
+import uk.ac.ed.inf.acpTutorial.configuration.SystemEnvironment;
+import uk.ac.ed.inf.acpTutorial.dto.Restaurant;
+import uk.ac.ed.inf.acpTutorial.dto.Tuple;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Objects;
 
-/**
- * the ILP Tutorial service which provides suppliers, orders and other useful things
- */
-@RestController
+@RestController()
+
+// Provide a default namespace
+@RequestMapping("/api/v1/acp")
+
+// Can be used, yet sometimes problematic
+// @AllArgsConstructor
+
 public class CoreRestController {
+
+    // Is deprecated
+    // @Autowired
+    private final SystemEnvironment acpSystemEnvironment;
+
+    /**
+     * Retrieves the ILP service endpoint URL from the system environment.
+     *
+     * @return the ILP service endpoint URL as a string
+     */
+    @GetMapping("/ilp-endpoint")
+    public String getIlpServiceEndpoint() {
+        return acpSystemEnvironment.getIlpServiceEndpoint();
+    }
+
+    /**
+     * Retrieves a configuration value from the system environment.
+     *
+     * @param endpoint the configuration value key
+     * @return the configuration value as a string
+     */
+    @GetMapping("/config-value")
+    public String getConfigValue(@Value("#{ilpServiceEndpoint}") String endpoint) {
+        return endpoint;
+    }
+
+    /**
+     * Constructs a new CoreRestController instance with the provided environment.
+     *
+     * @param acpSystemEnvironment the system environment
+     */
+    public CoreRestController(SystemEnvironment acpSystemEnvironment) {
+        this.acpSystemEnvironment = acpSystemEnvironment;
+    }
 
     /**
      * get a buffered reader for a resource

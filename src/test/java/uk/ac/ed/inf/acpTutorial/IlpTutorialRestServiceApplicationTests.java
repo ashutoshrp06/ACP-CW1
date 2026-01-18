@@ -1,10 +1,10 @@
-package uk.ac.ed.inf.ilptutorialrestservice;
+package uk.ac.ed.inf.acpTutorial;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class IlpTutorialRestServiceApplicationTests {
+class acpTutorialApplicationTests {
 
 	@Test
 	void contextLoads() {
