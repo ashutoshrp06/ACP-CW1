@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class S3Configuration {
 
-    @Value( "${acp.s3-endpoint:https://ilp-rest-2025-all-assigned.azurewebsites.net/}")
+    @Value( "${acp.s3-endpoint:http://s3.localhost.localstack.cloud:4566}")
     private String s3Endpoint;
 
     @Value( "${acp.s3-bucket:https://ilp-rest-2025-all-assigned.azurewebsites.net/}")

@@ -40,3 +40,4 @@ acp:
   # ilp-endpoint: https://ilp-rest-2025-all-assigned.azurewebsites.net/ABC
   s3-endpoint: http://s3.localhost.localstack.cloud:4566
   s3-bucket: acp
+  dynamodb-endpoint: http://dynamodb.localhost.localstack.cloud:4566
