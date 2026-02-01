@@ -25,6 +25,7 @@ public class DynamoDbControllerTest {
         assertTrue(dynamoDbController.listTables().contains(tableName));
     }
 
+
     @Test
     public void testCreateObjectSucceeds() {
         String tableName = "test-table-" + System.currentTimeMillis();
