@@ -1,6 +1,5 @@
 package uk.ac.ed.inf.acpTutorial.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ed.inf.acpTutorial.configuration.PostgresConfiguration;
@@ -17,10 +16,13 @@ import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/api/v1/acp/async-test")
-@RequiredArgsConstructor
 public class AsyncController {
 
     private final AsyncService asyncService;
+
+    public AsyncController(AsyncService asyncService) {
+        this.asyncService = asyncService;
+    }
     private final HashMap<String, CompletableFuture<String>> pendingRequestMap = new HashMap<>();
 
     @GetMapping("/new-correlation-id")

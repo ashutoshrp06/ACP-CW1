@@ -1,6 +1,5 @@
 package uk.ac.ed.inf.acpTutorial.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,11 +21,15 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class PostgresService {
 
     private final JdbcTemplate jdbcTemplate;
     private final DroneRepository droneRepository;
+
+    public PostgresService(JdbcTemplate jdbcTemplate, DroneRepository droneRepository) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.droneRepository = droneRepository;
+    }
 
     /**
      * Retrieves all drones from the database and maps them to Drone DTOs.

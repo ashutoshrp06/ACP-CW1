@@ -1,6 +1,5 @@
 package uk.ac.ed.inf.acpTutorial.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -19,11 +18,15 @@ import uk.ac.ed.inf.acpTutorial.configuration.SystemEnvironment;
 
 @RestController()
 @RequestMapping("/api/v1/acp/s3")
-@RequiredArgsConstructor
 public class S3Controller {
 
     private final S3Configuration s3Configuration;
     private final SystemEnvironment systemEnvironment;
+
+    public S3Controller(S3Configuration s3Configuration, SystemEnvironment systemEnvironment) {
+        this.s3Configuration = s3Configuration;
+        this.systemEnvironment = systemEnvironment;
+    }
 
 
     @GetMapping("/endpoint")

@@ -3,7 +3,6 @@ package uk.ac.ed.inf.acpTutorial.service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,12 +31,16 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class DynamoDbService {
 
     private final DynamoDbConfiguration dynamoDbConfiguration;
     private final SystemEnvironment systemEnvironment;
     private static final String KEY_COLUMN_NAME = "key";
+
+    public DynamoDbService(DynamoDbConfiguration dynamoDbConfiguration, SystemEnvironment systemEnvironment) {
+        this.dynamoDbConfiguration = dynamoDbConfiguration;
+        this.systemEnvironment = systemEnvironment;
+    }
 
     public List<String> listTables() {
         return getDynamoDbClient().listTables().tableNames();
@@ -107,5 +110,12 @@ public class DynamoDbService {
                 .region(systemEnvironment.getAwsRegion())
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(systemEnvironment.getAwsUser(), systemEnvironment.getAwsSecret())))
                 .build();
+    }
+
+    public void saveMessageToDynamoDb(String sqsTableInDynamoDb, String key, String message) {
+        if (! getDynamoDbClient().listTables().tableNames().contains(sqsTableInDynamoDb)) {
+            createTable(sqsTableInDynamoDb);
+        }
+        createObject(sqsTableInDynamoDb, key, message);
     }
 }

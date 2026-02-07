@@ -2,7 +2,6 @@ package uk.ac.ed.inf.acpTutorial.controller;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import jdk.jfr.ContentType;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.dynamodb.model.*;
@@ -12,11 +11,15 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/api/v1/acp/dynamo")
-@RequiredArgsConstructor
 public class DynamoDbController {
 
     private final DynamoDbConfiguration dynamoDbConfiguration;
     private final DynamoDbService dynamoDbService;
+
+    public DynamoDbController(DynamoDbConfiguration dynamoDbConfiguration, DynamoDbService dynamoDbService) {
+        this.dynamoDbConfiguration = dynamoDbConfiguration;
+        this.dynamoDbService = dynamoDbService;
+    }
 
     @GetMapping("/endpoint")
     public String getDynamoDbEndpoint () {

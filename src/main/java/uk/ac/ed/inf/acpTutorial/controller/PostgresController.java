@@ -1,6 +1,5 @@
 package uk.ac.ed.inf.acpTutorial.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +20,15 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/api/v1/acp/postgres")
-@RequiredArgsConstructor
 public class PostgresController {
 
     private final PostgresConfiguration postgresConfiguration;
     private final PostgresService postgresService;
+
+    public PostgresController(PostgresConfiguration postgresConfiguration, PostgresService postgresService) {
+        this.postgresConfiguration = postgresConfiguration;
+        this.postgresService = postgresService;
+    }
     @GetMapping("/endpoint")
     public String getPostgresEndpoint() {
         return postgresConfiguration.getPostgresEndpoint();

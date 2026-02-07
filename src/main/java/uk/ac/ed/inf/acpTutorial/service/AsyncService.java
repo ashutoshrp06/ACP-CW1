@@ -1,7 +1,5 @@
 package uk.ac.ed.inf.acpTutorial.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -21,24 +19,22 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 
 // the magic annotation to enable async
 @EnableAsync
 
-@RequiredArgsConstructor
 public class AsyncService {
 
     @Async
     public CompletableFuture<String> asyncMethod(){
-        log.info("Async method init at: " + LocalDateTime.now());
+        System.out.println("Async method init at: " + LocalDateTime.now());
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-            log.error("Error sleeping", e);
+            System.err.println("Error sleeping: " + e.getMessage());
         }
-        log.info("Async method terminateda at: " + LocalDateTime.now());
+        System.out.println("Async method terminated at: " + LocalDateTime.now());
         return CompletableFuture.completedFuture("Done for " + UUID.randomUUID());
     }
 }
