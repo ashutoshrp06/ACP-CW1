@@ -9,9 +9,9 @@
 		<relativePath/>
 	</parent>
 	<groupId>uk.ac.ed.inf</groupId>
-	<artifactId>AcpTutorialStorage</artifactId>
+	<artifactId>AcpCW1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>AcpTutorialStorage</name>
+	<name>AcpCW1</name>
 	<description>ACP Coursework 1</description>
 	<properties>
 		<java.version>21</java.version>

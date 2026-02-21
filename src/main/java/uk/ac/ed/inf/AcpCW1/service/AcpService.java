@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.acpTutorial.service;
+package uk.ac.ed.inf.AcpCW1.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,10 +17,10 @@ import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Object;
-import uk.ac.ed.inf.acpTutorial.configuration.S3Configuration;
-import uk.ac.ed.inf.acpTutorial.configuration.SystemEnvironment;
-import uk.ac.ed.inf.acpTutorial.dto.Capability;
-import uk.ac.ed.inf.acpTutorial.dto.DroneApiResponse;
+import uk.ac.ed.inf.AcpCW1.configuration.S3Configuration;
+import uk.ac.ed.inf.AcpCW1.configuration.SystemEnvironment;
+import uk.ac.ed.inf.AcpCW1.dto.Capability;
+import uk.ac.ed.inf.AcpCW1.dto.DroneApiResponse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

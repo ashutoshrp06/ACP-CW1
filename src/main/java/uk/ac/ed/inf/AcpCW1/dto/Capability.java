@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.acpTutorial.dto;
+package uk.ac.ed.inf.AcpCW1.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

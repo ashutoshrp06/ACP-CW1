@@ -1,6 +1,6 @@
 spring:
   application:
-    name: AcpTutorial
+    name: AcpCW1
 
   datasource:
     url: "${acp.postgres:jdbc:postgresql://localhost:5432/acp}"
@@ -24,7 +24,7 @@ spring:
 
 info:
   app:
-    name: AcpTutorial
+    name: AcpCW1
     description: ACP Coursework 1 REST Service
     version: 1.0
 

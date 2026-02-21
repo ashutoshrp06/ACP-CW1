@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.acpTutorial.service;
+package uk.ac.ed.inf.AcpCW1.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -6,8 +6,8 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
-import uk.ac.ed.inf.acpTutorial.configuration.DynamoDbConfiguration;
-import uk.ac.ed.inf.acpTutorial.configuration.SystemEnvironment;
+import uk.ac.ed.inf.AcpCW1.configuration.DynamoDbConfiguration;
+import uk.ac.ed.inf.AcpCW1.configuration.SystemEnvironment;
 
 import java.net.URI;
 import java.util.List;
