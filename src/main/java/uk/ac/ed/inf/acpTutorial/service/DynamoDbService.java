@@ -1,16 +1,9 @@
 package uk.ac.ed.inf.acpTutorial.service;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -18,16 +11,9 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 import uk.ac.ed.inf.acpTutorial.configuration.DynamoDbConfiguration;
 import uk.ac.ed.inf.acpTutorial.configuration.SystemEnvironment;
-import uk.ac.ed.inf.acpTutorial.dto.Drone;
-import uk.ac.ed.inf.acpTutorial.entity.DroneEntity;
-import uk.ac.ed.inf.acpTutorial.mapper.DroneMapper;
-import uk.ac.ed.inf.acpTutorial.repository.DroneRepository;
 
 import java.net.URI;
-import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
