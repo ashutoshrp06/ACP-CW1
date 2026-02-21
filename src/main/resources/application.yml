@@ -3,53 +3,45 @@ spring:
     name: AcpTutorial
 
   datasource:
-    url: "${acp.postgres-endpoint:jdbc:postgresql://localhost:5433/postgres}"
-    username: "${POSTGRES_USER:postgres}"
-    password: "${POSTGRES_PASSWORD:postgres}"
+    url: "${acp.postgres:jdbc:postgresql://localhost:5432/acp}"
+    username: "postgres"
+    password: "postgres"
     driver-class-name: org.postgresql.Driver
-    # HikariCP tuning (optional)
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
 
   jpa:
     hibernate:
-      ddl-auto: none   # use Liquibase for schema management; change to 'update' only for development if desired
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
     show-sql: false
 
   liquibase:
-    enabled: true
-    change-log: classpath:db/changelog/db.changelog-master.yml
+    enabled: false
 
 info:
   app:
     name: AcpTutorial
-    description: This is the ACP Tutorial Rest Service
+    description: ACP Coursework 1 REST Service
     version: 1.0
 
 management:
   endpoints:
     web:
       exposure:
-        include: info, health, env
-  info:
-    env:
-      enabled: true
-
+        include: info, health
   endpoint:
     health:
       show-details: always
       probes:
         enabled: true
 
-
 logging:
   level:
-    web: debug
+    web: info
 
 springdoc:
   api-docs:
@@ -58,13 +50,8 @@ springdoc:
 server:
   port: 8080
 
-
 acp:
-  # ilp-endpoint: https://ilp-rest-2025-all-assigned.azurewebsites.net/ABC
-  s3-endpoint: http://s3.localhost.localstack.cloud:4566
-  s3-bucket: acp
-  dynamodb-endpoint: http://dynamodb.localhost.localstack.cloud:4566
-  postgres-endpoint: jdbc:postgresql://localhost:5432/postgres
-
-  sqs-queue-name: acp-tutorial-queue
-  sqs-table-in-dynamodb: acp-sqs-table
+  postgres: "jdbc:postgresql://localhost:5432/acp"
+  s3: "http://localhost:4566"
+  dynamodb: "http://localhost:4566"
+  sid: "${ACP_SID:s2821285}"

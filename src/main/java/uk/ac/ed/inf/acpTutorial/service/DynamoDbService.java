@@ -1,10 +1,7 @@
 package uk.ac.ed.inf.acpTutorial.service;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -14,6 +11,7 @@ import uk.ac.ed.inf.acpTutorial.configuration.SystemEnvironment;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -21,87 +19,77 @@ public class DynamoDbService {
 
     private final DynamoDbConfiguration dynamoDbConfiguration;
     private final SystemEnvironment systemEnvironment;
-    private static final String KEY_COLUMN_NAME = "key";
 
     public DynamoDbService(DynamoDbConfiguration dynamoDbConfiguration, SystemEnvironment systemEnvironment) {
         this.dynamoDbConfiguration = dynamoDbConfiguration;
         this.systemEnvironment = systemEnvironment;
     }
 
+    /**
+     * Lists all table names in DynamoDB.
+     */
     public List<String> listTables() {
         return getDynamoDbClient().listTables().tableNames();
     }
 
-
-    public List<String> listTableObjects(@PathVariable String table) {
+    /**
+     * Scans all items in a table. Returns each item as a raw attribute map.
+     * The caller is responsible for serialization.
+     */
+    public List<Map<String, AttributeValue>> scanAllItems(String table) {
         return getDynamoDbClient()
-                .scanPaginator(ScanRequest.builder()
-                        .tableName(table)
-                        .build())
-                .items()
-                .stream()
-                .map(e ->
-                    "{ \"key\": \"" + e.get("key").s() + " \", \"content\": \"" + e.get("content").s() + "\" } "
-                )
-                .toList();
+                .scan(ScanRequest.builder().tableName(table).build())
+                .items();
     }
 
-    public void createTable(@PathVariable String table) {
-        getDynamoDbClient().createTable(b -> b.tableName(table)
-                .attributeDefinitions(AttributeDefinition.builder()
-                        .attributeName(KEY_COLUMN_NAME)
-                        .attributeType(ScalarAttributeType.S)
-                        .build())
-                .keySchema(KeySchemaElement.builder()
-                        .attributeName(KEY_COLUMN_NAME)
-                        .keyType(KeyType.HASH)
-                        .build())
-                .provisionedThroughput(ProvisionedThroughput.builder()
-                        .readCapacityUnits(5L)
-                        .writeCapacityUnits(5L)
-                        .build())
+    /**
+     * Gets a single item by its partition (HASH) key value.
+     * Returns null if the item does not exist.
+     */
+    public Map<String, AttributeValue> getItemByKey(String table, String keyName, String keyValue) {
+        GetItemResponse response = getDynamoDbClient().getItem(
+                GetItemRequest.builder()
+                        .tableName(table)
+                        .key(Map.of(keyName, AttributeValue.builder().s(keyValue).build()))
+                        .build()
+        );
+        // DynamoDB returns an empty map (not null) when item is not found
+        return (response.hasItem() && !response.item().isEmpty()) ? response.item() : null;
+    }
+
+    /**
+     * Writes a fully-constructed item map to DynamoDB.
+     * The caller is responsible for including the partition key in the map.
+     */
+    public void putItem(String table, Map<String, AttributeValue> item) {
+        getDynamoDbClient().putItem(
+                PutItemRequest.builder()
+                        .tableName(table)
+                        .item(item)
+                        .build()
         );
     }
 
-    public void createObject(@PathVariable String table, @PathVariable String key, @RequestBody String objectContent) {
-        getDynamoDbClient().putItem(b -> b.tableName(table).item(
-                java.util.Map.of("key", software.amazon.awssdk.services.dynamodb.model.AttributeValue.builder().s(key).build(),
-                        "content", software.amazon.awssdk.services.dynamodb.model.AttributeValue.builder().s(objectContent).build())
-        ));
-    }
-
-    public String getTablePrimaryKey(
-            @Parameter(name = "table", description = "The name of the DynamoDB table")
-            @PathVariable(required = true)
-            String table) {
-
-        DescribeTableRequest request = DescribeTableRequest.builder()
-                .tableName(table)
-                .build();
-
-        DescribeTableResponse response = getDynamoDbClient().describeTable(request);
-
+    /**
+     * Discovers the HASH (partition) key attribute name for a given table.
+     */
+    public String getTablePrimaryKey(String table) {
+        DescribeTableResponse response = getDynamoDbClient().describeTable(
+                DescribeTableRequest.builder().tableName(table).build()
+        );
         return response.table().keySchema().stream()
-                .filter(k -> k.keyType().toString().equals("HASH"))
+                .filter(k -> k.keyType() == KeyType.HASH)
                 .map(KeySchemaElement::attributeName)
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("No HASH key found for table: " + table));
     }
 
-
-
-    private DynamoDbClient getDynamoDbClient() {
+    public DynamoDbClient getDynamoDbClient() {
         return DynamoDbClient.builder()
                 .endpointOverride(URI.create(dynamoDbConfiguration.getDynamoDbEndpoint()))
                 .region(systemEnvironment.getAwsRegion())
-                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(systemEnvironment.getAwsUser(), systemEnvironment.getAwsSecret())))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(systemEnvironment.getAwsUser(), systemEnvironment.getAwsSecret())))
                 .build();
-    }
-
-    public void saveMessageToDynamoDb(String sqsTableInDynamoDb, String key, String message) {
-        if (! getDynamoDbClient().listTables().tableNames().contains(sqsTableInDynamoDb)) {
-            createTable(sqsTableInDynamoDb);
-        }
-        createObject(sqsTableInDynamoDb, key, message);
     }
 }

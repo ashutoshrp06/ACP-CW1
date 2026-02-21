@@ -17,8 +17,9 @@ services:
     #      size: 134217728 # 128*2^20 bytes = 128Mb
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: acp
     ports:
-      - 5433:5432
+      - 5432:5432
 
   adminer:
     image: adminer
@@ -35,7 +36,7 @@ services:
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - DEBUG=${DEBUG:-0}
-      - SERVICES=s3,dynamodb,sqs
+      - SERVICES=s3,dynamodb
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"

@@ -1,4 +1,11 @@
 package uk.ac.ed.inf.acpTutorial.dto;
 
 public class ProcessRequest {
+
+    private String urlPath;
+
+    public ProcessRequest() {}
+
+    public String getUrlPath() { return urlPath; }
+    public void setUrlPath(String urlPath) { this.urlPath = urlPath; }
 }
