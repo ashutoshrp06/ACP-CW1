@@ -54,7 +54,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- OpenAPI / Swagger UI -->
+		<!-- OpenAPI/Swagger UI -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -68,7 +68,7 @@
 			<version>2.10.1</version>
 		</dependency>
 
-		<!-- Data access: JPA + PostgreSQL -->
+		<!-- Data access: JPA+PostgreSQL -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -79,7 +79,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- AWS SDK v2: S3 and DynamoDB base clients only -->
+		<!-- AWS SDK: S3 and DynamoDB -->
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>s3</artifactId>

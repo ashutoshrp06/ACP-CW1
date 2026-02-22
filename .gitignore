@@ -33,3 +33,7 @@ build/
 .vscode/
 
 /env/
+
+acp_submission_image.tar
+test.json
+volume/
