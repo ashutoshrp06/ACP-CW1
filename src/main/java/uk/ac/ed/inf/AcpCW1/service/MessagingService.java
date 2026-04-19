@@ -26,7 +26,7 @@ import java.util.*;
 @Service
 public class MessagingService {
 
-    private static final String TRANSFORM_VERSIONS_KEY = "transform_state";
+    private static final String TRANSFORM_KEYS_SET = "transform_keys_set";
 
     private final RabbitTemplate rabbitTemplate;
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -217,9 +217,14 @@ public class MessagingService {
 
             if ("TOMBSTONE".equals(key)) {
                 tombstoneCount++;
-                redisTemplate.delete(TRANSFORM_VERSIONS_KEY);
 
-                // Tombstone summary counts as 1 message written
+                // Delete all individual version keys tracked for transformMessages
+                Set<String> trackedKeys = redisTemplate.opsForSet().members(TRANSFORM_KEYS_SET);
+                if (trackedKeys != null && !trackedKeys.isEmpty()) {
+                    redisTemplate.delete(trackedKeys);
+                }
+                redisTemplate.delete(TRANSFORM_KEYS_SET);
+
                 totalMessagesWritten++;
 
                 Map<String, Object> summary = new LinkedHashMap<>();
@@ -235,18 +240,16 @@ public class MessagingService {
                 int version  = node.get("version").asInt();
                 double value = node.get("value").asDouble();
 
-                Object storedVersion = redisTemplate.opsForHash()
-                        .get(TRANSFORM_VERSIONS_KEY, key);
+                String storedVersion = redisTemplate.opsForValue().get(key);
                 int redisVersion = (storedVersion == null) ? -1
-                        : Integer.parseInt(storedVersion.toString());
+                        : Integer.parseInt(storedVersion);
 
                 String outBody;
                 double outValue;
 
                 if (redisVersion < version) {
-                    // New or newer version: update Redis, add 10.5
-                    redisTemplate.opsForHash().put(TRANSFORM_VERSIONS_KEY, key,
-                            String.valueOf(version));
+                    redisTemplate.opsForValue().set(key, String.valueOf(version));
+                    redisTemplate.opsForSet().add(TRANSFORM_KEYS_SET, key);
                     outValue = value + 10.5;
                     totalMessagesProcessed++;
                     totalAdded += 10.5;
@@ -257,7 +260,6 @@ public class MessagingService {
                     out.put("value", outValue);
                     outBody = objectMapper.writeValueAsString(out);
                 } else {
-                    // Same or older version: pass through 1:1
                     outValue = value;
                     outBody = body;
                 }
